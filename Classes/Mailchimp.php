@@ -42,7 +42,7 @@ class Mailchimp implements MailchimpInterface, cURLConstantInterface {
             $this->_base = str_replace('{server}', $this->getServer(), $this->_base);
 
         } catch(MissingException $MissingException) {
-            $this->dlog([$MissingException->getEndpoint() => json_encode($MissingException->getMissings())]);
+            $this->dlog([$MissingException->getThrow() => json_encode($MissingException->getMissings())]);
         }
 
         return $this;
