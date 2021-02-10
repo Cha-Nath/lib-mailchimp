@@ -6,12 +6,10 @@ interface MailchimpInterface {
 
     /**
      *
-     * @param string $user
-     * @param string $pwd
-     * @param string $server
-     * @return void
+     * @param string $config
+     * @return self
      */
-    public function init(string $user, string $pwd, string $server);
+    public function init(string $configs);
 
     /**
      *

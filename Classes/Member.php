@@ -10,7 +10,20 @@ class Member extends Mailchimp {
         $this->_base .= '/lists/{list_id}/members';
     }
 
-    public function getMemeber(string $listID, string $email) {
+    public function getMember(string $listID) {
+
+        $url = str_replace('{list_id}', $listID, $this->_base);
+
+        $members = $this->cURL($url)
+        ->setEncoding(self::APPLICATION_JSON)
+        ->setOptions([CURLOPT_USERPWD => $this->getUserPwd()])
+        ->setDebug(...$this->dd())
+        ->get();
+
+        return json_decode($members);
+    }
+
+    public function getMembers(string $listID, string $email) {
 
         $url = str_replace(['{list_id}', '{subscriber_hash}'], [$listID, md5($email)], $this->_base);
 
@@ -22,19 +35,6 @@ class Member extends Mailchimp {
 
         return json_decode($member);
 
-    }
-
-    public function getMembers(string $listID) {
-
-        $url = str_replace('{list_id}', $listID, $this->_base);
-
-        $members = $this->cURL($url)
-        ->setEncoding(self::APPLICATION_JSON)
-        ->setOptions([CURLOPT_USERPWD => $this->getUserPwd()])
-        ->setDebug(...$this->dd())
-        ->get();
-
-        return json_decode($members);
     }
 
     public function create() {

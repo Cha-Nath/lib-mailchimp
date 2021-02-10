@@ -8,6 +8,9 @@ use nlib\Instance\Traits\InstanceTrait;
 use nlib\Log\Traits\DebugTrait;
 use nlib\Log\Traits\LogTrait;
 use Nlib\Mailchimp\Interfaces\MailchimpInterface;
+use nlib\Missing\Exceptions\MissingException;
+use nlib\Missing\Traits\MissingTrait;
+use nlib\Yaml\Traits\ParserTrait;
 
 class Mailchimp implements MailchimpInterface, cURLConstantInterface {
 
@@ -15,17 +18,34 @@ class Mailchimp implements MailchimpInterface, cURLConstantInterface {
     use cURLTrait;
     use LogTrait;
     use DebugTrait;
+    use MissingTrait;
+    use ParserTrait;
+
+    protected $_base = 'https://{server}.api.mailchimp.com/3.0';
 
     private $_user = 'user';
-    private $_base = 'https://{server}.api.mailchimp.com/3.0';
     private $_pwd;
     private $_server;
 
-    public function init(string $user, string $pwd, string $server) {
-        $this->setUser($user)
-        ->setPwd($pwd)
-        ->setServer($server);
-        $this->_base = str_replace('{server}', $this->getServer(), $this->_base);
+    public function init(string $config) : self {
+
+        $configs = $this->Parser()->get($config);
+        try {
+
+            if(!$this->is_missing(['user', 'pwd', 'server'], $configs))
+                throw new MissingException($this->getMissings(), __CLASS__ . '::' . __FUNCTION__);
+        
+            $this->setUser($configs['user'])
+            ->setPwd($configs['pwd'])
+            ->setServer($configs['server']);
+
+            $this->_base = str_replace('{server}', $this->getServer(), $this->_base);
+
+        } catch(MissingException $MissingException) {
+            $this->dlog([$MissingException->getEndpoint() => json_encode($MissingException->getMissings())]);
+        }
+
+        return $this;
     }
 
     #region Getter
