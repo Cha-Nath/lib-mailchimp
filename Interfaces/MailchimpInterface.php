@@ -33,6 +33,12 @@ interface MailchimpInterface {
 
     /**
      *
+     * @return string
+     */
+    public function getBase() : string;
+
+    /**
+     *
      * @param string $user
      * @return self
      */
@@ -51,4 +57,11 @@ interface MailchimpInterface {
      * @return self
      */
     public function setServer(string $server);
+
+    /**
+     *
+     * @param string $base
+     * @return self
+     */
+    public function setBase(string $base);
 }
