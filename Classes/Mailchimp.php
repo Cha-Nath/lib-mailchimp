@@ -12,7 +12,7 @@ use nlib\Missing\Exceptions\MissingException;
 use nlib\Missing\Traits\MissingTrait;
 use nlib\Yaml\Traits\ParserTrait;
 
-class Mailchimp implements MailchimpInterface, cURLConstantInterface {
+abstract class Mailchimp implements MailchimpInterface, cURLConstantInterface {
 
     use InstanceTrait;
     use cURLTrait;
@@ -26,6 +26,8 @@ class Mailchimp implements MailchimpInterface, cURLConstantInterface {
     private $_user = 'user';
     private $_pwd;
     private $_server;
+    
+    abstract public function getEndpoint(string $listID, string $var = '');
 
     public function init(string $config) : self {
 

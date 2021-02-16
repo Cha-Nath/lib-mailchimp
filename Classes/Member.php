@@ -10,7 +10,7 @@ class Member extends Mailchimp {
         $this->_base .= '/lists/{list_id}/members';
     }
 
-    public function getMember(string $listID) {
+    public function getMembers(string $listID) {
 
         $members = $this->cURL($this->getEndpoint($listID))
         ->setEncoding(self::APPLICATION_JSON)
@@ -21,7 +21,7 @@ class Member extends Mailchimp {
         return json_decode($members);
     }
 
-    public function getMembers(string $listID, string $email) {
+    public function getMember(string $listID, string $email) {
 
         $member = $this->cURL($this->getEndpoint($listID, $email))
         ->setEncoding(self::APPLICATION_JSON)
