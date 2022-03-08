@@ -2,13 +2,17 @@
 
 namespace Nlib\Mailchimp\Classes;
 
-class Field extends Mailchimp {
+use stdClass;
+use Nlib\Mailchimp\Classes\Mailchimp;
+use Nlib\Mailchimp\Interfaces\FieldInterface;
+
+class Field extends Mailchimp implements FieldInterface {
 
     public function __construct() {
         $this->_base .= '/lists/{list_id}/merge-fields';
     }
 
-    public function getFields(string $listID) {
+    public function getFields(string $listID) : ? stdClass {
 
         $fields = $this->cURL($this->getEndpoint($listID))
         ->setEncoding(self::APPLICATION_JSON)
@@ -19,7 +23,7 @@ class Field extends Mailchimp {
         return json_decode($fields);
     }
 
-    public function getField(string $listID, string $memberID) {
+    public function getField(string $listID, string $memberID) : ? stdClass {
 
         $field = $this->cURL($this->getEndpoint($listID, $memberID))
         ->setEncoding(self::APPLICATION_JSON)
@@ -30,7 +34,7 @@ class Field extends Mailchimp {
         return json_decode($field);
     }
 
-    public function create(string $listID, array $values) {
+    public function create(string $listID, array $values) : ? stdClass {
 
         $create = $this->cURL($this->getEndpoint($listID))
         ->setEncoding(self::APPLICATION_JSON)
@@ -41,7 +45,7 @@ class Field extends Mailchimp {
         return json_decode($create);
     }
 
-    public function update(string $listID, string $mergeID, array $values) {
+    public function update(string $listID, string $mergeID, array $values) : ? stdClass {
 
         $update = $this->cURL($this->getEndpoint($listID, $mergeID))
         ->setEncoding(self::APPLICATION_JSON)
