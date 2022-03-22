@@ -10,7 +10,8 @@
         "nlib/lib-yaml" : "dev-master@dev",
         "nlib/lib-log" : "dev-master@dev",
         "nlib/lib-instance" : "dev-master@dev",
-        "nlib/lib-missing" : "dev-master@dev"
+        "nlib/lib-missing" : "dev-master@dev",
+        "mailchimp/marketing": "^3.0"
     },
     "autoload": {
         "psr-4": {
